@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ICE vs Hybrid vs EV Calculator | Ronnel Estrada</title>
+<meta name="description" content="Compare the true cost of owning a gasoline, hybrid, or electric vehicle. Free calculator by Ronnel Estrada — Property & Auto Consultant.">
+
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1474546497428016');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1474546497428016&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0b0c0e;
+  --surface: #13151a;
+  --card: #161920;
+  --border: #2a2d35;
+  --text: #e0ddd8;
+  --bright: #f5f3ef;
+  --dim: #7a7872;
+  --gold: #d4a843;
+  --gold-dim: #9a7a2e;
+  --red: #e53935;
+  --orange: #ff9800;
+  --green: #43a047;
+  --blue: #1e88e5;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Outfit', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+::selection { background: var(--gold); color: #000; }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+.app { max-width: 720px; margin: 0 auto; padding: 0 0 60px; }
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, var(--surface) 0%, var(--bg) 100%);
+  border-bottom: 1px solid rgba(212,168,67,0.25);
+  padding: 20px 22px;
+  text-align: center;
+}
+.header-label {
+  font-size: 10px; font-weight: 800; letter-spacing: 3.5px;
+  color: var(--gold); text-transform: uppercase; margin-bottom: 6px;
+}
+.header h1 {
+  font-size: 1.5rem; font-weight: 800; color: var(--bright); line-height: 1.2;
+}
+.header p { font-size: 12px; color: var(--dim); margin-top: 4px; }
+
+/* Tabs */
+.tabs {
+  display: flex; gap: 4px; padding: 10px 20px;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+}
+.tab {
+  padding: 8px 16px; border-radius: 8px; border: none;
+  background: transparent; color: var(--dim);
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  font-family: 'Outfit', sans-serif; white-space: nowrap;
+  border-bottom: 2px solid transparent; transition: all 0.2s;
+}
+.tab:hover { color: var(--text); }
+.tab.active { border-bottom-color: var(--gold); color: var(--gold); background: rgba(212,168,67,0.08); }
+.tab[data-color="red"].active { border-bottom-color: var(--red); color: var(--red); background: rgba(229,57,53,0.08); }
+.tab[data-color="orange"].active { border-bottom-color: var(--orange); color: var(--orange); background: rgba(255,152,0,0.08); }
+.tab[data-color="green"].active { border-bottom-color: var(--green); color: var(--green); background: rgba(67,160,71,0.08); }
+.tab[data-color="blue"].active { border-bottom-color: var(--blue); color: var(--blue); background: rgba(30,136,229,0.08); }
+
+/* Cards */
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 20px 22px; margin-bottom: 14px;
+}
+.card-accent { border-left: 3px solid var(--gold); }
+
+/* Inputs */
+.input-group { margin-bottom: 16px; }
+.input-group label {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-size: 12px; font-weight: 600; color: var(--dim); margin-bottom: 5px;
+}
+.input-group .hint { font-style: italic; font-size: 11px; }
+.input-row { display: flex; align-items: center; gap: 10px; }
+.input-row input[type=range] {
+  flex: 1; -webkit-appearance: none; appearance: none;
+  background: var(--surface); border-radius: 4px; height: 6px; outline: none;
+}
+.input-row input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--gold); cursor: pointer; border: 2px solid var(--bg);
+}
+.num-box {
+  display: flex; align-items: center; gap: 4px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 5px 10px; min-width: 100px;
+}
+.num-box input[type=number] {
+  background: transparent; border: none; color: var(--bright);
+  font-size: 14px; font-weight: 700; width: 65px; text-align: right;
+  font-family: 'Outfit', sans-serif; outline: none;
+}
+.num-box input[type=number]::-webkit-inner-spin-button { opacity: 0.3; }
+.num-box .unit { font-size: 11px; color: var(--dim); }
+
+/* Price input special */
+.price-input-wrap {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 14px;
+}
+.price-input-wrap .currency { font-size: 16px; font-weight: 700; color: var(--gold); }
+.price-input-wrap input {
+  background: transparent; border: none; color: var(--bright);
+  font-size: 18px; font-weight: 800; width: 100%;
+  font-family: 'Outfit', sans-serif; outline: none;
+}
+.price-input-wrap input::placeholder { color: var(--dim); font-weight: 400; }
+
+/* Results */
+.result-box {
+  background: linear-gradient(135deg, var(--card), var(--surface));
+  border: 1px solid rgba(212,168,67,0.3); border-radius: 16px;
+  padding: 22px; margin-bottom: 16px;
+}
+.result-title {
+  font-size: 13px; font-weight: 800; color: var(--gold);
+  letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px;
+}
+
+/* Bars */
+.bar-wrap { margin-bottom: 10px; }
+.bar-label {
+  display: flex; justify-content: space-between; margin-bottom: 3px;
+  font-size: 12px;
+}
+.bar-label .name { color: var(--text); }
+.bar-label .amount { font-weight: 700; }
+.bar-track { background: var(--surface); border-radius: 6px; height: 12px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 6px; transition: width 0.6s ease; min-width: 4px; }
+
+/* Stat boxes */
+.stats-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+.stat-box {
+  flex: 1; min-width: 100px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 14px 16px; text-align: center;
+}
+.stat-box.highlight { border-width: 1.5px; }
+.stat-box .stat-label { font-size: 11px; color: var(--dim); font-weight: 600; margin-bottom: 4px; }
+.stat-box .stat-value { font-size: 20px; font-weight: 800; }
+.stat-box .stat-sub { font-size: 11px; color: var(--dim); margin-top: 2px; }
+
+/* Winner box */
+.winner-box {
+  border-radius: 12px; padding: 16px 20px; text-align: center; margin-bottom: 16px;
+  border-width: 1.5px; border-style: solid;
+}
+.winner-box .winner-label { font-size: 12px; color: var(--dim); font-weight: 600; }
+.winner-box .winner-name { font-size: 22px; font-weight: 800; margin: 4px 0; }
+.winner-box .winner-sub { font-size: 13px; color: var(--text); }
+
+/* Chart */
+.chart-container { margin-bottom: 16px; }
+.chart-bars { display: flex; gap: 8px; align-items: flex-end; height: 200px; margin-bottom: 12px; }
+.chart-group { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.chart-group-bars { display: flex; gap: 2px; align-items: flex-end; width: 100%; justify-content: center; }
+.chart-bar { width: 28%; border-radius: 4px 4px 0 0; transition: height 0.5s; min-height: 4px; }
+.chart-label { font-size: 11px; color: var(--dim); font-weight: 600; }
+
+/* Legend */
+.legend { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.legend-dot { width: 12px; height: 12px; border-radius: 3px; }
+.legend-text { font-size: 12px; color: var(--dim); }
+
+/* Table */
+.tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
+.tbl th { padding: 8px 10px; text-align: right; font-size: 12px; border-bottom: 1px solid var(--border); }
+.tbl th:first-child { text-align: left; color: var(--dim); }
+.tbl td { padding: 8px 10px; text-align: right; font-weight: 500; }
+.tbl td:first-child { text-align: left; color: var(--dim); font-weight: 400; }
+.tbl .row-total td { font-weight: 800; border-top: 2px solid rgba(212,168,67,0.3); }
+
+/* Cost of waiting */
+.waiting-box {
+  background: linear-gradient(135deg, rgba(229,57,53,0.06), rgba(229,57,53,0.02));
+  border: 1.5px solid rgba(229,57,53,0.3); border-radius: 14px;
+  padding: 22px; margin-bottom: 16px;
+}
+.waiting-title {
+  font-size: 13px; font-weight: 800; color: var(--red);
+  letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px;
+}
+.waiting-subtitle { font-size: 12px; color: var(--dim); margin-bottom: 16px; }
+.waiting-stat {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 14px; background: rgba(229,57,53,0.06);
+  border-radius: 10px; margin-bottom: 8px;
+}
+.waiting-stat .ws-label { font-size: 13px; color: var(--text); }
+.waiting-stat .ws-value { font-size: 18px; font-weight: 800; color: var(--red); }
+.waiting-insight {
+  margin-top: 14px; padding: 14px 16px; background: rgba(212,168,67,0.06);
+  border: 1px solid rgba(212,168,67,0.2); border-radius: 10px;
+}
+.waiting-insight p { font-size: 13px; color: var(--text); line-height: 1.6; }
+.waiting-insight strong { color: var(--gold); }
+
+/* Section note */
+.section-note {
+  background: var(--surface); border-radius: 10px;
+  padding: 10px 14px; font-size: 12px; color: var(--dim);
+  margin-top: 8px;
+}
+
+/* CTA / Footer */
+.cta-box {
+  background: linear-gradient(135deg, rgba(212,168,67,0.1), rgba(212,168,67,0.03));
+  border: 1.5px solid rgba(212,168,67,0.35);
+  border-radius: 16px; padding: 24px; text-align: center; margin-top: 24px;
+}
+.cta-name { font-size: 18px; font-weight: 800; color: var(--bright); margin-bottom: 4px; }
+.cta-title { font-size: 12px; color: var(--gold); font-weight: 600; letter-spacing: 0.5px; margin-bottom: 12px; }
+.cta-contact {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 28px; border-radius: 12px;
+  background: var(--gold); color: #0b0c0e;
+  text-decoration: none; font-size: 15px; font-weight: 700;
+  transition: transform 0.2s, background 0.2s;
+}
+.cta-contact:hover { transform: translateY(-2px); background: #e8c36a; }
+.cta-sub { font-size: 11px; color: var(--dim); margin-top: 10px; }
+
+.footer { text-align: center; padding: 20px; }
+.footer p { font-size: 10px; color: var(--dim); }
+
+/* Panel visibility */
+.panel { display: none; padding: 16px 20px; }
+.panel.active { display: block; }
+
+/* Responsive */
+@media (max-width: 500px) {
+  .header h1 { font-size: 1.2rem; }
+  .stats-row { flex-direction: column; }
+  .stat-box { min-width: unset; }
+  .chart-bars { height: 160px; }
+}
+</style>
+</head>
+<body>
+
+<div class="app" id="app">
+  <!-- Header -->
+  <div class="header">
+    <div class="header-label">Ronnel Estrada</div>
+    <h1>ICE vs Hybrid vs EV</h1>
+    <p>Total Cost of Ownership Calculator</p>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" data-tab="driving" onclick="switchTab('driving')">Driving Profile</button>
+    <button class="tab" data-tab="ice" data-color="red" onclick="switchTab('ice')">ICE</button>
+    <button class="tab" data-tab="hybrid" data-color="orange" onclick="switchTab('hybrid')">Hybrid</button>
+    <button class="tab" data-tab="ev" data-color="green" onclick="switchTab('ev')">EV</button>
+    <button class="tab" data-tab="results" data-color="blue" onclick="switchTab('results')">Results</button>
+  </div>
+
+  <!-- PANEL: Driving Profile -->
+  <div class="panel active" id="panel-driving">
+    <div class="card card-accent">
+      <p style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:14px;">Your Driving Profile</p>
+      <div class="input-group">
+        <label>Daily commute (round trip) <span class="hint">avg Filipino: 25-40 km</span></label>
+        <div class="input-row">
+          <input type="range" min="5" max="200" step="1" value="30" id="dailyKm" oninput="sync(this);calc()">
+          <div class="num-box"><input type="number" min="5" max="200" value="30" id="dailyKm_n" oninput="syncR(this,'dailyKm');calc()"><span class="unit">km</span></div>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Driving days per month</label>
+        <div class="input-row">
+          <input type="range" min="10" max="30" step="1" value="22" id="daysMonth" oninput="sync(this);calc()">
+          <div class="num-box"><input type="number" min="10" max="30" value="22" id="daysMonth_n" oninput="syncR(this,'daysMonth');calc()"><span class="unit">days</span></div>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Ownership period</label>
+        <div class="input-row">
+          <input type="range" min="1" max="10" step="1" value="5" id="years" oninput="sync(this);calc()">
+          <div class="num-box"><input type="number" min="1" max="10" value="5" id="years_n" oninput="syncR(this,'years');calc()"><span class="unit">years</span></div>
+        </div>
+      </div>
+      <div class="section-note" id="driving-summary">Monthly: 660 km | Annual: 7,920 km | 5-Year: 39,600 km</div>
+    </div>
+    <div style="text-align:center;margin-top:8px;">
+      <button class="tab active" style="background:var(--gold);color:#000;border-radius:10px;padding:10px 28px;font-size:14px;font-weight:700;border:none;cursor:pointer;" onclick="switchTab('ice')">Next: Enter Your ICE Vehicle &rarr;</button>
+    </div>
+  </div>
+
+  <!-- PANEL: ICE -->
+  <div class="panel" id="panel-ice">
+    <div class="card" style="border-color:rgba(229,57,53,0.3);">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+        <span style="font-size:24px;">&#9981;</span>
+        <div>
+          <p style="font-size:15px;font-weight:700;color:var(--red);">ICE Vehicle (Gasoline / Diesel)</p>
+          <p style="font-size:11px;color:var(--dim);">Enter YOUR current or target gas/diesel vehicle</p>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Vehicle purchase price</label>
+        <div class="price-input-wrap">
+          <span class="currency">&#8369;</span>
+          <input type="number" min="0" max="10000000" step="10000" value="1100000" id="icePrice" placeholder="e.g. 1,100,000" oninput="calc()">
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Fuel efficiency <span class="hint">city driving</span></label>
+        <div class="input-row">
+          <input type="range" min="4" max="25" step="0.5" value="12" id="iceKmL" oninput="sync(this);calc()">
+          <div class="num-box"><input type="number" min="4" max="25" step="0.5" value="12" id="iceKmL_n" oninput="syncR(this,'iceKmL');calc()"><span class="unit">km/L</span></div>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Fuel price <span class="hint">gas or diesel per liter</span></label>
+        <div class="input-row">
+          <input type="range" min="40" max="110" step="1" value="68" id="iceFuel" oninput="sync(this);calc()">
+          <div class="num-box"><input type="number" min="40" max="110" value="68" id="iceFuel_n" oninput="syncR(this,'iceFuel');calc()"><span class="unit">&#8369;/L</span></div>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Annual maintenance (PMS, oil change, etc.)</label>
+        <div class="input-row">
+          <input type="range" min="5000" max="60000" step="1000" value="18000" id="icePMS" oninput="sync(this);calc()">
+          <div class="num-box"><input type="number" min="5000" max="60000" step="1000" value="18000" id="icePMS_n" oninput="syncR(this,'icePMS');calc()"><span class="unit">&#8369;/yr</span></div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:8px;">
+      <button class="tab active" style="background:var(--orange);color:#000;border-radius:10px;padding:10px 28px;font-size:14px;font-weight:700;border:none;cursor:pointer;" onclick="switchTab('hybrid')">Next: Hybrid Vehicle &rarr;</button>
+    </div>
+  </div>
+
+  <!-- PANEL: Hybrid -->
+  <div class="panel" id="panel-hybrid">
+    <div class="card" style="border-color:rgba(255,152,0,0.3);">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+        <span style="font-size:24px;">&#128267;</span>
+        <div>
+          <p style="font-size:15px;font-weight:700;color:var(--orange);">Plug-In Hybrid (DM-i / PHEV)</p>
+          <p style="font-size:11px;color:var(--dim);">Enter the hybrid vehicle you are considering</p>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Vehicle purchase price</label>
+        <div class="price-input-wrap">
+          <span class="currency">&#8369;</span>
+          <input type="number" min="0" max="10000000" step="10000" value="1248000" id="hybPrice" placeholder="e.g. 1,248,000" oninput="calc()">
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Fuel efficiency in hybrid mode <span class="hint">when engine runs</span></label>
+        <div class="input-row">
+          <input type="range" min="15" max="50" step="0.5" value="30" id="hybKmL" oninput="sync(this);calc()">
+          <div class="num-box"><input type="number" min="15" max="50" step="0.5" value="30" id="hybKmL_n" oninput="syncR(this,'hybKmL');calc()"><span class="unit">km/L</span></div>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Gasoline price</label>
+        <div class="input-row">
+          <input type="range" min="40" max="110" step="1" value="68" id="hybFuel" oninput="sync(this);calc()">
+          <div class="num-box"><input type="number" min="40" max="110" value="68" id="hybFuel_n" oninput="syncR(this,'hybFuel');calc()"><span class="unit">&#8369;/L</span></div>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Pure EV range per full charge</label>
+        <div class="input-row">
+          <input type="range" min="20" max="200" step="1" value="80" id="hybEVRange" oninput="sync(this);calc()">
+          <div class="num-box"><input type="number" min="20" max="200" value="80" id="hybEVRange_n" oninput="syncR(this,'hybEVRange');calc()"><span class="unit">km</span></div>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Battery capacity</label>
+        <div class="input-row">
+          <input type="range" min="5" max="40" step="0.5" value="15" id="hybBattery" oninput="sync(this);calc()">
+          <div class="num-box"><input type="number" min="5" max="40" step="0.5" value="15" id="hybBattery_n" oninput="syncR(this,'hybBattery');calc()"><span class="unit">kWh</span></div>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Electricity rate</label>
+        <div class="input-row">
+          <input type="range" min="5" max="20" step="0.5" value="12" id="hybElec" oninput="sync(this);calc()">
+          <div class="num-box"><input type="number" min="5" max="20" step="0.5" value="12" id="hybElec_n" oninput="syncR(this,'hybElec');calc()"><span class="unit">&#8369;/kWh</span></div>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>% of driving on EV mode <span class="hint">charge daily = 60-80%</span></label>
+        <div class="input-row">
+          <input type="range" min="0" max="100" step="5" value="70" id="hybEVPct" oninput="sync(this);calc()">
+          <div class="num-box"><input type="number" min="0" max="100" step="5" value="70" id="hybEVPct_n" oninput="syncR(this,'hybEVPct');calc()"><span class="unit">%</span></div>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Annual maintenance (PMS)</label>
+        <div class="input-row">
+          <input type="range" min="3000" max="30000" step="1000" value="12000" id="hybPMS" oninput="sync(this);calc()">
+          <div class="num-box"><input type="number" min="3000" max="30000" step="1000" value="12000" id="hybPMS_n" oninput="syncR(this,'hybPMS');calc()"><span class="unit">&#8369;/yr</span></div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:8px;">
+      <button class="tab active" style="background:var(--green);color:#fff;border-radius:10px;padding:10px 28px;font-size:14px;font-weight:700;border:none;cursor:pointer;" onclick="switchTab('ev')">Next: EV Vehicle &rarr;</button>
+    </div>
+  </div>
+
+  <!-- PANEL: EV -->
+  <div class="panel" id="panel-ev">
+    <div class="card" style="border-color:rgba(67,160,71,0.3);">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+        <span style="font-size:24px;">&#9889;</span>
+        <div>
+          <p style="font-size:15px;font-weight:700;color:var(--green);">Full Electric Vehicle (EV)</p>
+          <p style="font-size:11px;color:var(--dim);">Enter the EV you are considering</p>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Vehicle purchase price</label>
+        <div class="price-input-wrap">
+          <span class="currency">&#8369;</span>
+          <input type="number" min="0" max="10000000" step="10000" value="1398000" id="evPrice" placeholder="e.g. 1,398,000" oninput="calc()">
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Energy efficiency <span class="hint">typical EV: 5.5-7.5</span></label>
+        <div class="input-row">
+          <input type="range" min="3" max="10" step="0.1" value="6.5" id="evEff" oninput="sync(this);calc()">
+          <div class="num-box"><input type="number" min="3" max="10" step="0.1" value="6.5" id="evEff_n" oninput="syncR(this,'evEff');calc()"><span class="unit">km/kWh</span></div>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Electricity rate</label>
+        <div class="input-row">
+          <input type="range" min="5" max="20" step="0.5" value="12" id="evElec" oninput="sync(this);calc()">
+          <div class="num-box"><input type="number" min="5" max="20" step="0.5" value="12" id="evElec_n" oninput="syncR(this,'evElec');calc()"><span class="unit">&#8369;/kWh</span></div>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Annual maintenance (PMS)</label>
+        <div class="input-row">
+          <input type="range" min="2000" max="20000" step="500" value="5000" id="evPMS" oninput="sync(this);calc()">
+          <div class="num-box"><input type="number" min="2000" max="20000" step="500" value="5000" id="evPMS_n" oninput="syncR(this,'evPMS');calc()"><span class="unit">&#8369;/yr</span></div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:8px;">
+      <button class="tab active" style="background:var(--blue);color:#fff;border-radius:10px;padding:10px 28px;font-size:14px;font-weight:700;border:none;cursor:pointer;" onclick="switchTab('results')">See Results &rarr;</button>
+    </div>
+  </div>
+
+  <!-- PANEL: Results -->
+  <div class="panel" id="panel-results">
+
+    <!-- TCO Comparison -->
+    <div class="result-box" id="tco-results"></div>
+
+    <!-- Monthly Breakdown -->
+    <div class="card" id="monthly-results"></div>
+
+    <!-- Cost of Waiting -->
+    <div class="waiting-box" id="waiting-results"></div>
+
+    <!-- Chart -->
+    <div class="card" id="chart-results"></div>
+
+    <!-- Breakdown Table -->
+    <div class="card" id="table-results"></div>
+
+    <!-- Key Insight -->
+    <div id="insight-box"></div>
+
+    <!-- CTA -->
+    <div class="cta-box">
+      <div class="cta-name">Ronnel Estrada</div>
+      <div class="cta-title">Vehicle & Investment Consultant</div>
+      <a href="https://wa.me/639566510333" target="_blank" class="cta-contact">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#0b0c0e"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12.05 21.785h-.005a9.87 9.87 0 01-5.032-1.378l-.36-.214-3.742.982.999-3.648-.235-.374A9.86 9.86 0 012.17 12.01C2.17 6.565 6.593 2.14 12.05 2.14c2.643 0 5.13 1.03 6.996 2.9a9.834 9.834 0 012.9 6.98c-.003 5.45-4.426 9.875-9.876 9.875l-.02-.01zM20.52 3.449C18.247 1.226 15.236 0 12.05 0 5.463 0 .103 5.335.1 11.892c-.001 2.096.547 4.142 1.588 5.945L0 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.585 0 11.946-5.336 11.949-11.896.002-3.176-1.234-6.165-3.482-8.449z"/></svg>
+        0956 651 0333
+      </a>
+      <div class="cta-sub">Viber / WhatsApp / Call</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>Estimates based on inputs provided. Actual costs vary by driving habits, fuel prices, and electricity rates.</p>
+    <p style="margin-top:4px;">&copy; Ronnel Estrada | ronnelestrada.com</p>
+  </div>
+</div>
+
+<script>
+// ── Helpers ──
+function $(id) { return document.getElementById(id); }
+function fmt(n) {
+  if (n >= 1000000) return '\u20B1' + (n/1000000).toFixed(2) + 'M';
+  return '\u20B1' + Math.round(n).toLocaleString();
+}
+function fmtShort(n) {
+  if (n >= 1000000) return (n/1000000).toFixed(1) + 'M';
+  if (n >= 1000) return (n/1000).toFixed(0) + 'K';
+  return Math.round(n).toString();
+}
+function v(id) { return parseFloat($(id).value) || 0; }
+
+// ── Sync sliders <-> number inputs ──
+function sync(el) {
+  $(el.id + '_n').value = el.value;
+}
+function syncR(el, rangeId) {
+  $(rangeId).value = el.value;
+}
+
+// ── Tab switching ──
+function switchTab(tab) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  $('panel-' + tab).classList.add('active');
+  document.querySelector('[data-tab="' + tab + '"]').classList.add('active');
+  if (tab === 'results') {
+    calc();
+    // FB Pixel: track ViewContent when results are viewed
+    if (typeof fbq === 'function') fbq('track', 'ViewContent', { content_name: 'TCO Calculator Results' });
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Main Calculation ──
+function calc() {
+  var dailyKm = v('dailyKm'), daysMonth = v('daysMonth'), years = v('years');
+  var monthlyKm = dailyKm * daysMonth;
+  var annualKm = monthlyKm * 12;
+  var totalKm = annualKm * years;
+
+  // Driving summary
+  $('driving-summary').innerHTML = 'Monthly: <strong>' + monthlyKm.toLocaleString() + ' km</strong> | Annual: <strong>' + annualKm.toLocaleString() + ' km</strong> | ' + years + '-Year: <strong>' + totalKm.toLocaleString() + ' km</strong>';
+
+  // ICE
+  var icePrice = v('icePrice'), iceKmL = v('iceKmL'), iceFuel = v('iceFuel'), icePMS = v('icePMS');
+  var iceMonthlyFuel = (monthlyKm / iceKmL) * iceFuel;
+  var iceAnnualFuel = iceMonthlyFuel * 12;
+  var iceTotalFuel = iceAnnualFuel * years;
+  var iceTotalPMS = icePMS * years;
+  var iceTCO = icePrice + iceTotalFuel + iceTotalPMS;
+
+  // Hybrid
+  var hybPrice = v('hybPrice'), hybKmL = v('hybKmL'), hybFuel = v('hybFuel');
+  var hybEVRange = v('hybEVRange'), hybBattery = v('hybBattery'), hybElec = v('hybElec');
+  var hybEVPct = v('hybEVPct'), hybPMS = v('hybPMS');
+  var hybEvKm = monthlyKm * (hybEVPct / 100);
+  var hybFuelKm = monthlyKm - hybEvKm;
+  var hybMonthlyElec = (hybEvKm / hybEVRange) * hybBattery * hybElec;
+  var hybMonthlyFuel = (hybFuelKm / hybKmL) * hybFuel;
+  var hybMonthlyEnergy = hybMonthlyElec + hybMonthlyFuel;
+  var hybAnnualEnergy = hybMonthlyEnergy * 12;
+  var hybTotalEnergy = hybAnnualEnergy * years;
+  var hybTotalPMS = hybPMS * years;
+  var hybTCO = hybPrice + hybTotalEnergy + hybTotalPMS;
+
+  // EV
+  var evPrice = v('evPrice'), evEff = v('evEff'), evElec = v('evElec'), evPMS = v('evPMS');
+  var evMonthlyElec = (monthlyKm * evElec) / evEff;
+  var evAnnualElec = evMonthlyElec * 12;
+  var evTotalElec = evAnnualElec * years;
+  var evTotalPMS = evPMS * years;
+  var evTCO = evPrice + evTotalElec + evTotalPMS;
+
+  // Savings
+  var hybSave = iceTCO - hybTCO;
+  var evSave = iceTCO - evTCO;
+  var hybFuelSaveMo = iceMonthlyFuel - hybMonthlyEnergy;
+  var evFuelSaveMo = iceMonthlyFuel - evMonthlyElec;
+
+  // Winner
+  var maxTCO = Math.max(iceTCO, hybTCO, evTCO);
+  var winner = (iceTCO <= hybTCO && iceTCO <= evTCO) ? 'ice' : (hybTCO <= evTCO) ? 'hybrid' : 'ev';
+  var winnerColors = { ice: 'var(--red)', hybrid: 'var(--orange)', ev: 'var(--green)' };
+  var winnerLabels = { ice: '\u26FD ICE (Gasoline)', hybrid: '\uD83D\uDD0B Hybrid', ev: '\u26A1 Full EV' };
+  var winnerTCO = winner === 'ice' ? iceTCO : winner === 'hybrid' ? hybTCO : evTCO;
+
+  // Yearly data
+  var yearlyData = [];
+  for (var y = 1; y <= years; y++) {
+    yearlyData.push({
+      year: y,
+      ice: icePrice + (iceAnnualFuel + icePMS) * y,
+      hybrid: hybPrice + (hybAnnualEnergy + hybPMS) * y,
+      ev: evPrice + (evAnnualElec + evPMS) * y
+    });
+  }
+  var chartMax = 0;
+  yearlyData.forEach(function(d) { chartMax = Math.max(chartMax, d.ice, d.hybrid, d.ev); });
+
+  // ═══ RENDER TCO ═══
+  var pct = function(val) { return maxTCO > 0 ? Math.min((val / maxTCO) * 100, 100) : 0; };
+  $('tco-results').innerHTML =
+    '<div class="result-title">' + years + '-Year Total Cost of Ownership</div>' +
+    '<div class="bar-wrap"><div class="bar-label"><span class="name">\u26FD ICE</span><span class="amount" style="color:var(--red)">' + fmt(iceTCO) + '</span></div><div class="bar-track"><div class="bar-fill" style="width:' + pct(iceTCO) + '%;background:var(--red)"></div></div></div>' +
+    '<div class="bar-wrap"><div class="bar-label"><span class="name">\uD83D\uDD0B Hybrid</span><span class="amount" style="color:var(--orange)">' + fmt(hybTCO) + '</span></div><div class="bar-track"><div class="bar-fill" style="width:' + pct(hybTCO) + '%;background:var(--orange)"></div></div></div>' +
+    '<div class="bar-wrap"><div class="bar-label"><span class="name">\u26A1 EV</span><span class="amount" style="color:var(--green)">' + fmt(evTCO) + '</span></div><div class="bar-track"><div class="bar-fill" style="width:' + pct(evTCO) + '%;background:var(--green)"></div></div></div>' +
+    '<div class="winner-box" style="border-color:' + winnerColors[winner] + '55;background:' + winnerColors[winner].replace('var(','rgba(').replace(')',',0.08)').replace('--red','229,57,53').replace('--orange','255,152,0').replace('--green','67,160,71') + '">' +
+      '<div class="winner-label">LOWEST ' + years + '-YEAR TCO</div>' +
+      '<div class="winner-name" style="color:' + winnerColors[winner] + '">' + winnerLabels[winner] + '</div>' +
+      '<div class="winner-sub">' + fmt(winnerTCO) + ' total over ' + years + ' years</div>' +
+    '</div>' +
+    '<div class="stats-row">' +
+      '<div class="stat-box' + (hybSave > 0 ? ' highlight' : '') + '" style="border-color:' + (hybSave > 0 ? 'var(--orange)' : 'var(--border)') + '">' +
+        '<div class="stat-label">Hybrid vs ICE (' + years + 'yr)</div>' +
+        '<div class="stat-value" style="color:' + (hybSave > 0 ? 'var(--orange)' : 'var(--red)') + '">' + (hybSave > 0 ? 'Save ' + fmt(hybSave) : 'Costs ' + fmt(Math.abs(hybSave)) + ' more') + '</div>' +
+        '<div class="stat-sub">' + (hybFuelSaveMo > 0 ? fmt(Math.round(hybFuelSaveMo)) + '/mo fuel savings' : '') + '</div>' +
+      '</div>' +
+      '<div class="stat-box' + (evSave > 0 ? ' highlight' : '') + '" style="border-color:' + (evSave > 0 ? 'var(--green)' : 'var(--border)') + '">' +
+        '<div class="stat-label">EV vs ICE (' + years + 'yr)</div>' +
+        '<div class="stat-value" style="color:' + (evSave > 0 ? 'var(--green)' : 'var(--red)') + '">' + (evSave > 0 ? 'Save ' + fmt(evSave) : 'Costs ' + fmt(Math.abs(evSave)) + ' more') + '</div>' +
+        '<div class="stat-sub">' + (evFuelSaveMo > 0 ? fmt(Math.round(evFuelSaveMo)) + '/mo fuel savings' : '') + '</div>' +
+      '</div>' +
+    '</div>';
+
+  // ═══ MONTHLY ═══
+  $('monthly-results').innerHTML =
+    '<p style="font-size:14px;font-weight:800;color:var(--bright);margin-bottom:14px;">Monthly Running Cost</p>' +
+    '<div class="stats-row">' +
+      '<div class="stat-box"><div class="stat-label">ICE Fuel</div><div class="stat-value" style="color:var(--red);font-size:18px;">' + fmt(Math.round(iceMonthlyFuel)) + '</div><div class="stat-sub">/month</div></div>' +
+      '<div class="stat-box"><div class="stat-label">Hybrid Energy</div><div class="stat-value" style="color:var(--orange);font-size:18px;">' + fmt(Math.round(hybMonthlyEnergy)) + '</div><div class="stat-sub">/month</div></div>' +
+      '<div class="stat-box"><div class="stat-label">EV Electricity</div><div class="stat-value" style="color:var(--green);font-size:18px;">' + fmt(Math.round(evMonthlyElec)) + '</div><div class="stat-sub">/month</div></div>' +
+    '</div>' +
+    '<div class="section-note" style="color:var(--orange);">' +
+      '<strong>Hybrid breakdown:</strong> EV portion (' + v('hybEVPct') + '%): ' + fmt(Math.round(hybMonthlyElec)) + ' electricity | Fuel portion (' + (100 - v('hybEVPct')) + '%): ' + fmt(Math.round(hybMonthlyFuel)) + ' gasoline' +
+    '</div>';
+
+  // ═══ COST OF WAITING ═══
+  var waitMonths = [3, 6, 12];
+  var waitHTML = '<div class="waiting-title">Cost of Waiting</div>' +
+    '<div class="waiting-subtitle">Every month you stay with ICE, this is what you spend in fuel that a hybrid or EV would save you.</div>';
+
+  waitMonths.forEach(function(m) {
+    var hybLost = hybFuelSaveMo > 0 ? hybFuelSaveMo * m : 0;
+    var evLost = evFuelSaveMo > 0 ? evFuelSaveMo * m : 0;
+    var bestLost = Math.max(hybLost, evLost);
+    if (bestLost > 0) {
+      waitHTML += '<div class="waiting-stat"><span class="ws-label">Wait ' + m + ' month' + (m > 1 ? 's' : '') + '</span><span class="ws-value">' + fmt(Math.round(bestLost)) + ' lost</span></div>';
+    }
+  });
+
+  var annualLost = Math.max(hybFuelSaveMo > 0 ? hybFuelSaveMo * 12 : 0, evFuelSaveMo > 0 ? evFuelSaveMo * 12 : 0);
+  if (annualLost > 0) {
+    waitHTML += '<div class="waiting-insight">' +
+      '<p>Every year you delay switching, you spend an extra <strong>' + fmt(Math.round(annualLost)) + '</strong> on fuel and maintenance that you would have saved with a hybrid or EV. ' +
+      'Over ' + years + ' years, that adds up to <strong>' + fmt(Math.round(annualLost * years)) + '</strong> in savings you never get back.</p>' +
+    '</div>';
+  } else {
+    waitHTML += '<div class="waiting-insight"><p>Based on current inputs, the ICE vehicle has a competitive running cost. Adjust your inputs to compare different scenarios.</p></div>';
+  }
+
+  $('waiting-results').innerHTML = waitHTML;
+
+  // ═══ CHART ═══
+  var chartHTML = '<p style="font-size:14px;font-weight:800;color:var(--bright);margin-bottom:4px;">Cumulative Cost Over Time</p>' +
+    '<p style="font-size:12px;color:var(--dim);margin-bottom:16px;">Purchase + fuel/energy + maintenance</p>' +
+    '<div class="chart-bars">';
+  yearlyData.forEach(function(d) {
+    var maxH = 180;
+    var iceH = (d.ice / chartMax) * maxH;
+    var hybH = (d.hybrid / chartMax) * maxH;
+    var evH = (d.ev / chartMax) * maxH;
+    chartHTML += '<div class="chart-group">' +
+      '<div class="chart-group-bars">' +
+        '<div class="chart-bar" style="height:' + iceH + 'px;background:var(--red);" title="ICE: ' + fmt(d.ice) + '"></div>' +
+        '<div class="chart-bar" style="height:' + hybH + 'px;background:var(--orange);" title="Hybrid: ' + fmt(d.hybrid) + '"></div>' +
+        '<div class="chart-bar" style="height:' + evH + 'px;background:var(--green);" title="EV: ' + fmt(d.ev) + '"></div>' +
+      '</div>' +
+      '<span class="chart-label">Yr ' + d.year + '</span>' +
+    '</div>';
+  });
+  chartHTML += '</div>' +
+    '<div class="legend">' +
+      '<div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div><span class="legend-text">ICE</span></div>' +
+      '<div class="legend-item"><div class="legend-dot" style="background:var(--orange)"></div><span class="legend-text">Hybrid</span></div>' +
+      '<div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div><span class="legend-text">EV</span></div>' +
+    '</div>';
+
+  // Yearly table
+  chartHTML += '<div style="margin-top:16px;overflow-x:auto;"><table class="tbl"><thead><tr>' +
+    '<th style="text-align:left;color:var(--dim)">Year</th>' +
+    '<th style="color:var(--red)">ICE</th>' +
+    '<th style="color:var(--orange)">Hybrid</th>' +
+    '<th style="color:var(--green)">EV</th></tr></thead><tbody>';
+  yearlyData.forEach(function(d) {
+    chartHTML += '<tr><td>' + d.year + '</td><td>' + fmt(d.ice) + '</td><td>' + fmt(d.hybrid) + '</td><td>' + fmt(d.ev) + '</td></tr>';
+  });
+  chartHTML += '</tbody></table></div>';
+  $('chart-results').innerHTML = chartHTML;
+
+  // ═══ BREAKDOWN TABLE ═══
+  var rows = [
+    { label: 'Purchase Price', ice: icePrice, hyb: hybPrice, ev: evPrice },
+    { label: 'Fuel / Energy (' + years + 'yr)', ice: iceTotalFuel, hyb: hybTotalEnergy, ev: evTotalElec },
+    { label: 'Maintenance (' + years + 'yr)', ice: iceTotalPMS, hyb: hybTotalPMS, ev: evTotalPMS },
+    { label: 'TOTAL (' + years + 'yr)', ice: iceTCO, hyb: hybTCO, ev: evTCO, total: true }
+  ];
+  var tblHTML = '<p style="font-size:14px;font-weight:800;color:var(--bright);margin-bottom:14px;">' + years + '-Year Cost Breakdown</p>' +
+    '<div style="overflow-x:auto;"><table class="tbl"><thead><tr>' +
+    '<th style="text-align:left;color:var(--dim)">Category</th>' +
+    '<th style="color:var(--red)">\u26FD ICE</th>' +
+    '<th style="color:var(--orange)">\uD83D\uDD0B Hybrid</th>' +
+    '<th style="color:var(--green)">\u26A1 EV</th></tr></thead><tbody>';
+  rows.forEach(function(r) {
+    var cls = r.total ? ' class="row-total"' : '';
+    tblHTML += '<tr' + cls + '><td>' + r.label + '</td>' +
+      '<td style="color:' + (r.total ? 'var(--red)' : 'var(--text)') + '">' + fmt(r.ice) + '</td>' +
+      '<td style="color:' + (r.total ? 'var(--orange)' : 'var(--text)') + '">' + fmt(r.hyb) + '</td>' +
+      '<td style="color:' + (r.total ? 'var(--green)' : 'var(--text)') + '">' + fmt(r.ev) + '</td></tr>';
+  });
+  tblHTML += '</tbody></table></div>';
+  $('table-results').innerHTML = tblHTML;
+
+  // ═══ INSIGHT ═══
+  var iceRunning = iceTotalFuel + iceTotalPMS;
+  var hybRunning = hybTotalEnergy + hybTotalPMS;
+  var evRunning = evTotalElec + evTotalPMS;
+  $('insight-box').innerHTML =
+    '<div style="background:linear-gradient(135deg,rgba(212,168,67,0.08),rgba(212,168,67,0.02));border:1.5px solid rgba(212,168,67,0.3);border-radius:14px;padding:22px;text-align:center;margin-top:16px;">' +
+      '<p style="font-size:12px;font-weight:800;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">The Number That Matters</p>' +
+      '<p style="font-size:14px;color:var(--text);line-height:1.7;">' +
+        'Over ' + years + ' years and ' + totalKm.toLocaleString() + ' km, fuel and maintenance add ' +
+        '<strong style="color:var(--red)">' + fmt(Math.round(iceRunning)) + '</strong> to an ICE vehicle, ' +
+        'but only <strong style="color:var(--orange)">' + fmt(Math.round(hybRunning)) + '</strong> to a hybrid ' +
+        'and <strong style="color:var(--green)">' + fmt(Math.round(evRunning)) + '</strong> to an EV.' +
+      '</p>' +
+    '</div>';
+}
+
+// Init
+calc();
+</script>
+</body>
+</html>
